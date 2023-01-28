@@ -1,9 +1,10 @@
 name: Release
 
 on:
-  release:
-    types:
-      - created
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
 
 jobs:
   release:
@@ -22,8 +23,8 @@ jobs:
 
       - name: Download electron and unzip
         run: |
-          wget https://github.com/electron/electron/releases/download/v21.3.1/electron-v21.3.1-win32-x64.zip
-          unzip -n electron-v21.3.1-win32-x64.zip
+          wget https://github.com/electron/electron/releases/download/v22.1.0/electron-v22.1.0-win32-x64.zip
+          unzip -n electron-v22.1.0-win32-x64.zip
 
       - name: Build
         run: npm run build
@@ -34,6 +35,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: CefDetectorX.zip
           tag: ${{ github.ref }}
+          overwrite: true
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -41,3 +43,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: CefDetectorX-with-bgm.zip
           tag: ${{ github.ref }}
+          overwrite: true
